@@ -14,7 +14,7 @@ MORSE_CODE = {'A': '.-',     'B': '-...',   'C': '-.-.',
               '9': '----.',
 
               '.': '.-.-.-', ',': '--..--', ':': '---...',
-              "'": '.----.', '-': '-....-',
+              "'": '.----.', '-': '-....-'
               }
 
 
@@ -37,3 +37,22 @@ def english_to_morse(
         Name of output file containing the translated Morse code. Please don't change
         it since it's also hard-coded in the tests file.
     """
+    
+    with open(input_file, "r") as file:
+        english_text = file.read()
+    
+    data_to_write = ''
+    for char in english_text:
+        if char == '\n':
+            data_to_write += '\n'
+        elif char.upper() in MORSE_CODE:
+            data_to_write += MORSE_CODE[char.upper()] + ' '
+        elif char == ' ':
+            data_to_write += '/ '
+        else:
+            data_to_write += 'Unknown charachter'
+
+    with open(output_file, 'w') as file:
+        file.write(data_to_write)
+
+    return output_file 
