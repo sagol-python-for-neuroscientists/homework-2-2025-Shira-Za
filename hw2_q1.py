@@ -22,6 +22,8 @@ def english_to_morse(
     input_file: str = "lorem.txt",
     output_file: str = "lorem_morse.txt"
 ):
+    print("Opening input file...")
+    
     """Convert an input text file to an output Morse code file.
 
     Notes
@@ -40,19 +42,25 @@ def english_to_morse(
     
     with open(input_file, "r") as file:
         english_text = file.read()
-    
+
     data_to_write = ''
+
     for char in english_text:
         if char == '\n':
             data_to_write += '\n'
-        elif char.upper() in MORSE_CODE:
-            data_to_write += MORSE_CODE[char.upper()] + ' '
         elif char == ' ':
-            data_to_write += '/ '
-        else:
-            data_to_write += 'Unknown charachter'
+            data_to_write += '\n'
+        elif char.upper() in MORSE_CODE:
+            data_to_write += MORSE_CODE[char.upper()]
 
     with open(output_file, 'w') as file:
         file.write(data_to_write)
 
     return output_file 
+
+if __name__ == '__main__':
+    # Question 1
+    param1 = "lorem.txt"
+    param2 = "lorem_morse.txt"
+    return_value = english_to_morse(param1, param2)
+    print(f"Question 1 solution: {return_value}")
