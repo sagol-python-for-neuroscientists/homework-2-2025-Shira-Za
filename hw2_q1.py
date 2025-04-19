@@ -43,18 +43,22 @@ def english_to_morse(
     with open(input_file, "r") as file:
         english_text = file.read()
 
-    data_to_write = ''
+    lines = english_text.splitlines()
+    morse_lines = []
 
-    for char in english_text:
-        if char == '\n':
-            data_to_write += '\n'
-        elif char == ' ':
-            data_to_write += '\n'
-        elif char.upper() in MORSE_CODE:
-            data_to_write += MORSE_CODE[char.upper()]
+    for line in lines:
+        words = line.split()
+        morse_words = []
+        for word in words:
+            morse_word = ''.join(
+                MORSE_CODE[char.upper()] for char in word if char.upper() in MORSE_CODE
+                )
+            morse_words.append(morse_word)
+        morse_line = '\n'.join(morse_words)
+        morse_lines.append(morse_line)
 
     with open(output_file, 'w') as file:
-        file.write(data_to_write)
+        file.write('\n'.join(morse_lines))
 
     return output_file 
 
