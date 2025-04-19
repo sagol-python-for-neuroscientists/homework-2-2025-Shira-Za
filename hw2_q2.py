@@ -1,6 +1,6 @@
 from collections import namedtuple
 from enum import Enum
-from itertools import pairwise, zip_longest
+from itertools import zip_longest
 
 Condition = Enum("Condition", ("CURE", "HEALTHY", "SICK", "DYING", "DEAD"))
 Agent = namedtuple("Agent", ("name", "category"))
@@ -45,11 +45,11 @@ def meetup(agent_listing: tuple) -> list:
         a_cat = a.category
         b_cat = b.category
 
-        # Case 1: Both are CURE → unchanged
+        # Both are CURE:
         if a_cat == Condition.CURE and b_cat == Condition.CURE:
             updated_listing.extend([a, b])
 
-        # Case 2: One is CURE, other is SICK or DYING
+        # One is CURE:
         elif a_cat == Condition.CURE:
             if b_cat == Condition.DYING:
                 b = Agent(b.name, Condition.SICK)
@@ -64,37 +64,34 @@ def meetup(agent_listing: tuple) -> list:
                 a = Agent(a.name, Condition.HEALTHY)
             updated_listing.extend([a, b])
 
-        # Case 3: Both are DYING
-        elif a_cat == Condition.DYING and b_cat == Condition.DYING:
-            updated_listing.extend([
-                Agent(a.name, Condition.DEAD),
-                Agent(b.name, Condition.DEAD)
-            ])
-
-        # Case 4: Sick & Dying combos
-        elif a_cat == Condition.SICK and b_cat == Condition.DYING:
-            updated_listing.extend([
-                Agent(a.name, Condition.DYING),
-                Agent(b.name, Condition.DEAD)
-            ])
-        elif a_cat == Condition.DYING and b_cat == Condition.SICK:
-            updated_listing.extend([
-                Agent(a.name, Condition.DEAD),
-                Agent(b.name, Condition.DYING)
-            ])
-
-        # Case 5: Both SICK
-        elif a_cat == Condition.SICK and b_cat == Condition.SICK:
-            updated_listing.extend([
+        # All rest of the mixups:
+        elif a_cat == Condition.SICK:
+            if b_cat == Condition.SICK:
+                updated_listing.extend([
                 Agent(a.name, Condition.DYING),
                 Agent(b.name, Condition.DYING)
             ])
+            elif b_cat == Condition.DYING:
+                updated_listing.extend([
+                Agent(a.name, Condition.DYING),
+                Agent(b.name, Condition.DEAD)
+            ])
+        elif a_cat == Condition.DYING:
+            if b_cat == Condition.SICK:
+                updated_listing.extend([
+                Agent(a.name, Condition.DEAD),
+                Agent(b.name, Condition.DYING)
+            ])
+            elif b_cat == Condition.DYING:
+                updated_listing.extend([
+                    Agent(a.name, Condition.DEAD),
+                    Agent(b.name, Condition.DEAD)
+                    ])
 
-        # Fallback: no change
         else:
             updated_listing.extend([a, b])
 
-    # Step 4: Add in non-participating agents
+    # Adding non relevants:
     updated_listing.extend(not_relevant)
 
     return updated_listing
