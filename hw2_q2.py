@@ -99,3 +99,15 @@ def meetup(agent_listing: tuple) -> list:
 
     return updated_listing
 
+if __name__ == '__main__':
+    # Question 2:
+    agents = (
+        Agent("Charles", Condition.CURE),
+        Agent("Rosa", Condition.HEALTHY),
+        Agent("Jake", Condition.DYING),
+        Agent("Amy", Condition.SICK),
+        Agent("Terry", Condition.CURE),
+        Agent("Raymond", Condition.DEAD)
+    )
+    result = meetup(agents)
+    print(f"Question 2 solution: {result}")
