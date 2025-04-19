@@ -35,7 +35,7 @@ def meetup(agent_listing: tuple) -> list:
     not_relevant = [agent for agent in agent_listing if agent.category in (Condition.HEALTHY, Condition.DEAD)] #saving for later
     agents = [agent for agent in agent_listing if agent.category not in (Condition.HEALTHY, Condition.DEAD)]
 
-    pairs = zip_longest(agents[::2, agents[1::2]])
+    pairs = zip_longest(agents[::2], agents[1::2])
 
     for a, b in pairs:
         if b is None:
@@ -98,5 +98,4 @@ def meetup(agent_listing: tuple) -> list:
     updated_listing.extend(not_relevant)
 
     return updated_listing
-
 
